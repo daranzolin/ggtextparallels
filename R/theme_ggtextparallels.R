@@ -1,6 +1,16 @@
+#' ggtextparallels theme
+#'
+#' @param base_size base_size
+#' @param base_family base_family
+#'
+#' @return a `ggplot2` theme
+#' @noRd
+#'
+#' @import ggplot2
+#'
 theme_ggtextparallels <- function(base_size = 12, base_family = "Helvetica"){
-  theme_bw(base_size = base_size, base_family = base_family) %+replace%
-    theme(
+  ggplot2::theme_bw(base_size = base_size, base_family = base_family) +
+    ggplot2::theme(
       axis.title = element_blank(),
       axis.text = element_blank(),
       axis.ticks = element_blank(),

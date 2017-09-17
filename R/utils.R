@@ -21,7 +21,7 @@ extract_text <- function(text_url) {
 
   res <- httr::GET(text_url,
                    httr::user_agent(
-                     "ggpericope - https://github.com/daranzolin/ggpericope")
+                     "ggtextparllels - https://github.com/daranzolin/ggtextparallels")
   )
   if (res$status_code == 500) stop("Nothing available for that URN.")
   httr::stop_for_status(res)
