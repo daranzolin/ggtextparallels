@@ -18,7 +18,24 @@ knitr::opts_chunk$set(
 
 The goal of ggtextparallels is to approximate fancy and expensive tools like the *Synopsis Quattuor Evangeliorum*, an essential tool for biblical scholars. `ggtextparallels` supports both the English and Greek texts.
 
+## Installation
+
+`ggtextparallels` is not on CRAN, but can be installed with `devtools`:
+
+```{r eval=FALSE}
+devtools::install_github("daranzolin/ggtextparallels")
+```
+
 ## Examples
+
+The central function, `ggtextparallel`, takes two arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, and `lang`, the language argument.
+
+156 gospel parallels are available:
+
+```{r echo=FALSE}
+library(ggtextparallels)
+head(gospel_parallels)
+```
 
 English:
 
@@ -27,9 +44,17 @@ library(ggtextparallels)
 ggtextparallel(37)
 ```
 
-Greek
+Greek:
 
 ```{r, fig.width=12}
 ggtextparallel(37, lang = "grc")
 ```
 
+
+## Future Work
+
+* Tests
+* Vignette
+* Better organization of text
+* Highlighting similarities/differences
+* Document similarity scores in caption
