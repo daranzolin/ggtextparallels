@@ -37,24 +37,6 @@ extract_text <- function(text_url) {
     stringr::str_trim()
 }
 
-get_pericope <- function(pericope_no) {
-  pericopes %>%
-    filter(No. == pericope_no) %>%
-    gather(book, text, -Pericope) %>%
-    select(-Pericope) %>%
-    filter(text != "",
-           book != "No.") %>%
-    left_join(perseus_catalog, by = c("book" = "label")) %>%
-    filter(language == "eng") %>%
-    select(book, text, urn) %>%
-    rowwise() %>%
-    mutate(index = reformat_index(text),
-           text_url = map2(urn, index, get_text_url),
-           text = extract_text(text_url)) %>%
-    ungroup() %>%
-    select(book, index, text)
-}
-
 split_every <- function(x, n, pattern, collapse = pattern, ...) {
   x_split <- strsplit(x, pattern, perl = TRUE, ...)[[1]]
   out <- character(ceiling(length(x_split) / n))
@@ -65,14 +47,3 @@ split_every <- function(x, n, pattern, collapse = pattern, ...) {
   out
 }
 
-get_plot_titles <- function(pericope_no) {
-  texts <- pericopes %>%
-    filter(No. == pericope_no)
-  title <- texts$Pericope
-  texts <- texts %>%
-    select(Matthew, Mark, Luke, John) %>%
-    unlist()
-  texts <- texts[texts != ""]
-  subtitle <- map2_chr(names(texts), texts, paste) %>% paste(collapse = ", ")
-  list(title = title, subtitle = subtitle)
-}

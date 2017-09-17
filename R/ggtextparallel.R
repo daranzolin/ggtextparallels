@@ -1,16 +1,19 @@
 #' Create a ggtextparallel
 #'
-#' @param pericope_no integer from the No. column in gospel_parallels
+#' @param parallel_no integer from the No. column in gospel_parallels
 #'
 #' @return `ggplot2` object that facets the text pericopes
 #' @export
 #'
 #' @examples
 #' ggtextparallel(93)
-#' ggtextparallel(17)
-ggtextparallel <- function(pericope_no) {
+ggtextparallel <- function(parallel_no) {
 
-  p_df <- get_pericope(pericope_no) %>%
+  if(!parallel_no %in% internal_gospel_parallels$No.) {
+    stop("Invalid parallel argument. Check gospel_parallels for valid numbers.")
+  }
+
+  p_df <- get_pericope(parallel_no) %>%
     split(.$book) %>%
     purrr::map_df(function(x) {
       tibble::tibble(
@@ -23,7 +26,7 @@ ggtextparallel <- function(pericope_no) {
     dplyr::mutate(x = 1,
            y = rev(dplyr::row_number()))
 
-  titles <- get_plot_titles(pericope_no)
+  titles <- get_plot_titles(parallel_no)
 
   max_col <- max(p_df$y)
 
@@ -37,19 +40,19 @@ ggtextparallel <- function(pericope_no) {
     dplyr::ungroup() %>%
     dplyr::mutate(book = factor(book, levels = c("Matthew", "Mark", "Luke", "John"))) %>%
     ggplot2::ggplot(ggplot2::aes(x = x, y = new_y)) +
-    ggpot2::geom_text(aes(label = text, hjust = 0)) +
-    gplot2::labs(title = titles$title,
+    ggplot2::geom_text(aes(label = text, hjust = 0)) +
+    ggplot2::labs(title = titles$title,
          subtitle = titles$subtitle) +
     ggplot2::xlim(1, 5) +
     ggplot2::facet_wrap(~book) +
-    theme_ggpericope()
+    theme_ggtextparallels()
 
 }
 
-get_pericope <- function(pericope_no) {
+get_pericope <- function(parallel_no) {
 
-  pericopes %>%
-    dplyr::filter(No. == pericope_no) %>%
+  gospel_parallels %>%
+    dplyr::filter(No. == parallel_no) %>%
     tidyr::gather(book, text, -Pericope) %>%
     dplyr::select(-Pericope) %>%
     dplyr::filter(text != "",
@@ -65,9 +68,9 @@ get_pericope <- function(pericope_no) {
     dplyr::select(book, index, text)
 }
 
-get_plot_titles <- function(pericope_no) {
-  texts <- pericopes %>%
-    dplyr::filter(No. == pericope_no)
+get_plot_titles <- function(parallel_no) {
+  texts <- gospel_parallels %>%
+    dplyr::filter(No. == parallel_no)
   title <- texts$Pericope
   texts <- texts %>%
     dplyr::select(Matthew, Mark, Luke, John) %>%

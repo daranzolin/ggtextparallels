@@ -1,9 +1,25 @@
 Package: ggtextparallels
-Title: What the Package Does (one line, title case)
+Title: Create text parallels with ggplot2
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre"))
+Description: ggtextparallels approximates tools such as Synopsis Quattuor Evangeliorum, an important resource for
+  biblical scholars. 
 Depends: R (>= 3.4.1)
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
+Suggests: testthat,
+    knitr,
+    rmarkdown
+Imports: purrr,
+    dplyr,
+    ggplot2,
+    tidyr,
+    httr,
+    stringr,
+    rvest,
+    xml2,
+    tibble,
+    magrittr
+VignetteBuilder: knitr
