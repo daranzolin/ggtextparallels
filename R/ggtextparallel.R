@@ -1,37 +1,41 @@
 #' Create a ggtextparallel
 #'
 #' @param parallel_no integer from the No. column in gospel_parallels
-#' @param lang language, "eng" for English, "grk" for Greek
+#' @param lang language, "eng" for English, "grc" for Greek
+#' @param words_per_row how many words are displayed per row
 #'
 #' @return `ggplot2` object that facets the text pericopes
 #' @export
 #'
 #' @examples
 #' ggtextparallel(93)
-ggtextparallel <- function(parallel_no, lang = "eng") {
+ggtextparallel <- function(parallel_no, lang = "eng", words_per_row = 7) {
 
   if(!parallel_no %in% internal_gospel_parallels$No.) {
     stop("Invalid parallel argument. Check gospel_parallels for valid numbers.")
   }
 
-  p_df <- get_pericope(parallel_no, lang) %>%
+  raw_parallel <- get_pericope(parallel_no, lang)
+
+  p_df <- raw_parallel %>%
     split(.$book) %>%
     purrr::map_df(function(x) {
       tibble::tibble(
         book = x$book,
         index = x$index,
-        text = split_every(x$text, 9, " ")
+        text = split_every(x$text, words_per_row, " ")
       )
     }) %>%
     dplyr::group_by(book) %>%
     dplyr::mutate(x = 1,
-           y = rev(dplyr::row_number(index)))
+           y = rev(dplyr::row_number(index))) %>%
+    dplyr::ungroup()
 
   titles <- get_plot_titles(parallel_no)
 
   max_col <- max(p_df$y)
 
-  p_df %>%
+  p_df <- p_df %>%
     split(.$book) %>%
     purrr::map_df(function(x) {
       m <- max(x$y)
@@ -39,12 +43,19 @@ ggtextparallel <- function(parallel_no, lang = "eng") {
       dplyr::mutate(x, new_y = y + diff)
     }) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(book = factor(book, levels = c("Matthew", "Mark", "Luke", "John"))) %>%
-    ggplot2::ggplot(ggplot2::aes(x = x, y = new_y)) +
+    dplyr::mutate(book = factor(book, levels = c("Matthew", "Mark", "Luke", "John")))
+
+  max_ylim <- max(p_df$new_y)
+  common_words <- paste(extract_common_words(raw_parallel), collapse = ", ")
+
+    ggplot2::ggplot(p_df, ggplot2::aes(x = x, y = new_y)) +
     ggplot2::geom_text(ggplot2::aes(label = text, hjust = 0)) +
     ggplot2::labs(title = titles$title,
-         subtitle = titles$subtitle) +
+         subtitle = titles$subtitle,
+         caption = paste("Common words:", common_words)
+         ) +
     ggplot2::xlim(1, 6) +
+    ggplot2::ylim(-10, max_ylim) +
     ggplot2::facet_wrap(~book) +
     theme_ggtextparallels()
 

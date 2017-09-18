@@ -47,3 +47,17 @@ split_every <- function(x, n, pattern, collapse = pattern, ...) {
   out
 }
 
+extract_common_words <- function(df) {
+  words <- df %>%
+    split(.$book) %>%
+    purrr::map(dplyr::pull, text) %>%
+    purrr::map(stringr::str_split, " ") %>%
+    purrr::modify_depth(2, purrr::discard, ~. %in% tidytext::stop_words$word) %>%
+    purrr::modify_depth(2, stringr::str_replace_all, "[:punct:]", "") %>%
+    purrr::map(unique) %>%
+    purrr::flatten() %>%
+    purrr::flatten_chr()
+  words <- table(words)
+  names(words[words >= 3])
+}
+

@@ -4,12 +4,14 @@
 \alias{ggtextparallel}
 \title{Create a ggtextparallel}
 \usage{
-ggtextparallel(parallel_no, lang = "eng")
+ggtextparallel(parallel_no, lang = "eng", words_per_row = 7)
 }
 \arguments{
 \item{parallel_no}{integer from the No. column in gospel_parallels}
 
-\item{lang}{language, "eng" for English, "grk" for Greek}
+\item{lang}{language, "eng" for English, "grc" for Greek}
+
+\item{words_per_row}{how many words are displayed per row}
 }
 \value{
 `ggplot2` object that facets the text pericopes

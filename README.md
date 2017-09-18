@@ -11,12 +11,13 @@ Installation
 
 ``` r
 devtools::install_github("daranzolin/ggtextparallels")
+library(ggtextparallels)
 ```
 
 Examples
 --------
 
-The central function, `ggtextparallel`, takes two arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, and `lang`, the language argument.
+The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `lang`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
 
 156 gospel parallels are available:
 
@@ -35,19 +36,20 @@ The central function, `ggtextparallel`, takes two arguments: a `parallel_no`, wh
     #> 5       
     #> 6
 
-English:
+Here I request the English parallel of 'The Healing of Peter's Mother-in-Law':
 
 ``` r
-library(ggtextparallels)
-ggtextparallel(37)
+ggtextparallel(parallel_no = 37, lang = "eng", words_per_row = 6)
 ```
 
 ![](README-example-1.png)
 
-Greek:
+Words common to each pericope are listed in the plot caption.
+
+I can view the Greek by flipping the `lang` argument:
 
 ``` r
-ggtextparallel(37, lang = "grc")
+ggtextparallel(37, "grc", 5)
 ```
 
 ![](README-unnamed-chunk-4-1.png)
