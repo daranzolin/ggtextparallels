@@ -21,20 +21,20 @@ The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, 
 
 156 gospel parallels are available:
 
-    #>   No.                                     Pericope Matthew Mark    Luke
-    #> 1   1                                     Prologue     1.1  1.1   1.1-4
-    #> 2   2 The Promise of the Birth of John the Baptist               1.5-25
-    #> 3   3                             The Annunciation              1.26-38
-    #> 4   4                    Mary's Visit to Elizabeth              1.39-56
-    #> 5   5                The Birth of John the Baptist              1.57-80
-    #> 6   6                       The Genealogy of Jesus  1.2-17      3.23-38
-    #>     John
-    #> 1 1.1-18
-    #> 2       
-    #> 3       
-    #> 4       
-    #> 5       
-    #> 6
+    #> # A tibble: 156 x 6
+    #>      No.                                        Pericope Matthew  Mark
+    #>    <chr>                                           <chr>   <chr> <chr>
+    #>  1     1                                        Prologue     1.1   1.1
+    #>  2     2    The Promise of the Birth of John the Baptist              
+    #>  3     3                                The Annunciation              
+    #>  4     4                       Mary's Visit to Elizabeth              
+    #>  5     5                   The Birth of John the Baptist              
+    #>  6     6                          The Genealogy of Jesus  1.2-17      
+    #>  7     7                              The Birth of Jesus 1.18-25      
+    #>  8     8               The Adoration of the Infant Jesus  2.1-12      
+    #>  9     9 The Circumcision and Presentation in the Temple              
+    #> 10    10                The Flight into Egypt and Return 2.13-21      
+    #> # ... with 146 more rows, and 2 more variables: Luke <chr>, John <chr>
 
 Here I request the English parallel of 'The Healing of Peter's Mother-in-Law':
 

@@ -35,7 +35,7 @@ The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, 
 
 ```{r echo=FALSE}
 library(ggtextparallels)
-head(gospel_parallels)
+tibble::as.tibble(gospel_parallels)
 ```
 
 Here I request the English parallel of 'The Healing of Peter's Mother-in-Law':
