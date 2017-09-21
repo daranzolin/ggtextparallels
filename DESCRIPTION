@@ -22,5 +22,6 @@ Imports: purrr,
     xml2,
     tibble,
     magrittr,
-    tidytext
+    tidytext,
+    rbiblesearch
 VignetteBuilder: knitr
