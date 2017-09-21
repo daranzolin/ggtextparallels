@@ -3,7 +3,7 @@ context("ggtextparallel")
 test_that("Can successfully plot parallel 37", {
   skip_on_cran()
 
-  expect_true(inherits(ggtextparallel(49, lang = "grc"), "ggplot"))
+  expect_true(inherits(ggtextparallel(49, version = "grc"), "ggplot"))
 
 })
 

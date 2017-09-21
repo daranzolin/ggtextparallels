@@ -1,21 +1,22 @@
 #' Create a ggtextparallel
 #'
-#' @param parallel_no integer from the No. column in gospel_parallels
-#' @param lang language, "eng" for English, "grc" for Greek
-#' @param words_per_row how many words are displayed per row
+#' @param parallel_no integer from the No. column in gospel_parallels.
+#' @param version translation version from versions object. "grc" for koine greek.
+#' @param words_per_row how many words are displayed per row.
 #'
 #' @return `ggplot2` object that facets the text pericopes
 #' @export
 #'
 #' @examples
-#' ggtextparallel(93)
-ggtextparallel <- function(parallel_no, lang = "eng", words_per_row = 7) {
+#' ggtextparallel(93, version = "eng-ESV")
+#' ggtextparallel(17, version = "grc", words_per_row = 5)
+ggtextparallel <- function(parallel_no, version = NULL, words_per_row = 7) {
 
   if(!parallel_no %in% internal_gospel_parallels$No.) {
     stop("Invalid parallel argument. Check gospel_parallels for valid numbers.")
   }
 
-  raw_parallel <- get_pericope(parallel_no, lang)
+  raw_parallel <- get_pericope(parallel_no, version)
 
   p_df <- raw_parallel %>%
     split(.$book) %>%
@@ -31,7 +32,7 @@ ggtextparallel <- function(parallel_no, lang = "eng", words_per_row = 7) {
            y = rev(dplyr::row_number(index))) %>%
     dplyr::ungroup()
 
-  titles <- get_plot_titles(parallel_no)
+  titles <- get_plot_titles(parallel_no, version)
 
   max_col <- max(p_df$y)
 
@@ -61,30 +62,62 @@ ggtextparallel <- function(parallel_no, lang = "eng", words_per_row = 7) {
 
 }
 
-get_pericope <- function(parallel_no, lang) {
+get_pericope <- function(parallel_no, version) {
 
-  internal_gospel_parallels %>%
-    dplyr::filter(No. == parallel_no) %>%
-    tidyr::gather(book, text, -Pericope) %>%
-    dplyr::select(-Pericope) %>%
-    dplyr::filter(text != "",
-           book != "No.") %>%
-    dplyr::left_join(perseus_catalog, by = c("book" = "label")) %>%
-    dplyr::filter(language == lang,
-                  grepl("perseus", urn)) %>%
-    dplyr::select(book, text, urn) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(index = reformat_index(text),
-           text_url = purrr::map2(urn, index, get_text_url),
-           text = extract_text(text_url)) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(book, index, text)
+  #Greek text comes from Perseus Digital Library
+  if (version == "grc") {
+    xt <- internal_gospel_parallels %>%
+      dplyr::filter(No. == parallel_no) %>%
+      tidyr::gather(book, text, -Pericope) %>%
+      dplyr::select(-Pericope) %>%
+      dplyr::filter(text != "",
+                    book != "No.") %>%
+      dplyr::left_join(perseus_catalog, by = c("book" = "label")) %>%
+      dplyr::filter(language == version,
+                    grepl("perseus", urn)) %>%
+      dplyr::select(book, text, urn) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(index = reformat_index(text),
+                    text_url = purrr::map2(urn, index, get_text_url),
+                    text = extract_text(text_url)) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(book, index, text)
+
+  } else {
+
+    #All other versions come from BIBLESEARCH API
+
+    x <- gospel_parallels %>%
+      dplyr::filter(No. == parallel_no) %>%
+      tidyr::gather(book, verses, -Pericope) %>%
+      dplyr::filter(verses != "",
+                    book != "No.") %>%
+      dplyr::select(book, verses)
+
+    xl <- list(
+      version = version,
+      book = x$book,
+      verses = x$verses
+    )
+
+    xt <- purrr::pmap(xl, rbiblesearch::biblesearch_passage)
+    names(xt) <- xl$book
+    xt <- xt %>%
+      dplyr::data_frame() %>%
+      purrr::flatten_df() %>%
+      tidyr::gather(book, text) %>%
+      dplyr::mutate(index = xl$verses)%>%
+      dplyr::mutate(first_verse_number = get_first_verse_number(index)) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(text = new_text(first_verse_number, text))
+  }
+  xt
 }
 
-get_plot_titles <- function(parallel_no) {
+get_plot_titles <- function(parallel_no, version) {
   texts <- gospel_parallels %>%
     dplyr::filter(No. == parallel_no)
-  title <- texts$Pericope
+  title <- paste0(texts$Pericope, " (", version, ")")
   texts <- texts %>%
     dplyr::select(Matthew, Mark, Luke, John) %>%
     unlist()

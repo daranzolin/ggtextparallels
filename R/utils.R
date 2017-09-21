@@ -61,3 +61,19 @@ extract_common_words <- function(df) {
   names(words[words >= 3])
 }
 
+get_first_verse_number <- function(index) {
+  stringr::str_split(index, "\\.") %>%
+    purrr::map(~.[[2]]) %>%
+    purrr::map_chr(~stringr::str_sub(., 1, 1))
+}
+
+new_text <- function(first_verse_number, text) {
+  c1 <- stringr::str_sub(text, 1, 1)
+  if (c1 %in% as.character(1:9)) {
+    t <- paste0(first_verse_number, text)
+  } else {
+    t <- paste(first_verse_number, text)
+  }
+  t
+}
+
