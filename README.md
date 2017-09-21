@@ -17,7 +17,7 @@ library(ggtextparallels)
 Examples
 --------
 
-The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `lang`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
+The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
 
 156 gospel parallels are available:
 
@@ -36,17 +36,20 @@ The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, 
     #> 10    10                The Flight into Egypt and Return 2.13-21      
     #> # ... with 146 more rows, and 2 more variables: Luke <chr>, John <chr>
 
-Here I request the English parallel of 'The Healing of Peter's Mother-in-Law':
+Here I request the English, ESV translation of 'The Healing of Peter's Mother-in-Law':
 
 ``` r
-ggtextparallel(parallel_no = 37, lang = "eng", words_per_row = 6)
+ggtextparallel(parallel_no = 37, version = "eng-ESV", words_per_row = 6)
+#> No encoding supplied: defaulting to UTF-8.
+#> No encoding supplied: defaulting to UTF-8.
+#> No encoding supplied: defaulting to UTF-8.
 ```
 
 ![](README-example-1.png)
 
 Words common to each pericope are listed in the plot caption.
 
-I can view the Greek by flipping the `lang` argument:
+I can view the Greek by flipping the `version` argument:
 
 ``` r
 ggtextparallel(37, "grc", 5)

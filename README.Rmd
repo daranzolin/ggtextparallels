@@ -29,7 +29,7 @@ library(ggtextparallels)
 
 ## Examples
 
-The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `lang`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
+The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
 
 156 gospel parallels are available:
 
@@ -38,15 +38,15 @@ library(ggtextparallels)
 tibble::as.tibble(gospel_parallels)
 ```
 
-Here I request the English parallel of 'The Healing of Peter's Mother-in-Law':
+Here I request the English, ESV translation of 'The Healing of Peter's Mother-in-Law':
 
 ```{r example, fig.width=12}
-ggtextparallel(parallel_no = 37, lang = "eng", words_per_row = 6)
+ggtextparallel(parallel_no = 37, version = "eng-ESV", words_per_row = 6)
 ```
 
 Words common to each pericope are listed in the plot caption.
 
-I can view the Greek by flipping the `lang` argument:
+I can view the Greek by flipping the `version` argument:
 
 ```{r, fig.width=12}
 ggtextparallel(37, "grc", 5)
