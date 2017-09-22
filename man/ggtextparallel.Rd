@@ -4,12 +4,12 @@
 \alias{ggtextparallel}
 \title{Create a ggtextparallel}
 \usage{
-ggtextparallel(parallel_no, version_id = NULL, words_per_row = 7)
+ggtextparallel(parallel_no, version = NULL, words_per_row = 7)
 }
 \arguments{
 \item{parallel_no}{integer from the No. column in gospel_parallels.}
 
-\item{version_id}{translation version from versions object. "grc" for koine greek.}
+\item{version}{translation version from versions object. "grc" for koine greek.}
 
 \item{words_per_row}{how many words are displayed per row.}
 }
@@ -20,6 +20,6 @@ ggtextparallel(parallel_no, version_id = NULL, words_per_row = 7)
 Create a ggtextparallel
 }
 \examples{
-ggtextparallel(93, version_id = "eng-ESV")
-ggtextparallel(17, version_id = "grc", words_per_row = 5)
+ggtextparallel(93, version = "eng-ESV")
+ggtextparallel(17, version = "grc", words_per_row = 5)
 }

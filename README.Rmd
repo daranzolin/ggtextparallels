@@ -45,7 +45,7 @@ tibble::as.tibble(ggtextparallels::biblesearch_versions)
 ```
 
 
-156 gospel parallels are available:
+367 gospel parallels are available:
 
 ```{r echo=FALSE}
 library(ggtextparallels)

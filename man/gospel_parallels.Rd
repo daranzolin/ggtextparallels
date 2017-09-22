@@ -4,7 +4,7 @@
 \name{gospel_parallels}
 \alias{gospel_parallels}
 \title{Gospel paralells from Synopsis Quattuor Evangeliorum}
-\format{A data frame with 156 rows and 6 variables:
+\format{A data frame with 367 rows and 6 variables:
 \describe{
   \item{No.}{parallel number}
   \item{Pericope}{pericope title}

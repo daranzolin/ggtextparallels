@@ -47,9 +47,9 @@ The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, 
     #> #   info <chr>, lang_name <chr>, lang_name_eng <chr>, abbreviation <chr>,
     #> #   updated_at <chr>
 
-156 gospel parallels are available:
+367 gospel parallels are available:
 
-    #> # A tibble: 156 x 5
+    #> # A tibble: 367 x 5
     #>                                           Pericope Matthew  Mark    Luke
     #>                                              <chr>   <chr> <chr>   <chr>
     #>  1                                        Prologue     1.1   1.1   1.1-4
@@ -62,7 +62,7 @@ The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, 
     #>  8               The Adoration of the Infant Jesus  2.1-12        2.8-20
     #>  9 The Circumcision and Presentation in the Temple               2.21-38
     #> 10                The Flight into Egypt and Return 2.13-21              
-    #> # ... with 146 more rows, and 1 more variables: John <chr>
+    #> # ... with 357 more rows, and 1 more variables: John <chr>
 
 Words common to each pericope are listed in the plot caption.
 

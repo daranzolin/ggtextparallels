@@ -3,7 +3,7 @@
 #' A dataset containing gospel parallels
 #' gospel_parallels.
 #'
-#' @format A data frame with 156 rows and 6 variables:
+#' @format A data frame with 367 rows and 6 variables:
 #' \describe{
 #'   \item{No.}{parallel number}
 #'   \item{Pericope}{pericope title}
