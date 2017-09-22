@@ -79,9 +79,14 @@ ggtextparallel(37, "grc", 5)
 ggtextparallel(37, "spa-RVR1960", 6)
 ```
 
+### Portuguese (Nova Tradução na Linguagem de Hoje)
+
+```{r, fig.width=12}
+ggtextparallel(37, "por-NTLH", 6)
+```
+
 ## Future Work
 
-* Cleaner text returned
 * Common word highlighting
 * Vignette
 * shiny app

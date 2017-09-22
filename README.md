@@ -97,10 +97,17 @@ ggtextparallel(37, "spa-RVR1960", 6)
 
 ![](README-unnamed-chunk-7-1.png)
 
+### Portuguese (Nova Tradução na Linguagem de Hoje)
+
+``` r
+ggtextparallel(37, "por-NTLH", 6)
+```
+
+![](README-unnamed-chunk-8-1.png)
+
 Future Work
 -----------
 
--   Cleaner text returned
 -   Common word highlighting
 -   Vignette
 -   shiny app
