@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 # ggtextparallels
 
-The goal of ggtextparallels is to approximate fancy and expensive tools like the *Synopsis Quattuor Evangeliorum*, an essential tool for biblical scholars. `ggtextparallels` supports both the English and Greek texts.
+The goal of ggtextparallels is to approximate fancy and expensive tools like the *Synopsis Quattuor Evangeliorum*, an essential tool for biblical scholars. Thanks to the people at [BibleSearch](http://bibles.org/eng-GNTD/Gen/1) `ggtextparallels` now supports over 300 versions across 277 languages. 
 
 ## Installation
 
@@ -27,16 +27,37 @@ devtools::install_github("daranzolin/ggtextparallels")
 library(ggtextparallels)
 ```
 
-## Examples
+## Preparation
 
-The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, the language argument, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
+`ggtextparallels` relies on two APIs: the Perseus Digital Library and BibleSearch. An API key is required to access the versions and translations from BibleSearch, but [you can obtain one free here.](http://bibles.org/pages/api) Add the key to your .Renviron, and install `rbiblesearch` from GitHub:
+
+```{r eval = FALSE}
+devtools::install_github("daranzolin/rbiblesearch")
+rbiblesearch::set_biblesearch_key("your_key_here")
+```
+
+## Introduction
+
+The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, 304 of which can be obtained from `biblesearch_versions`, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
+
+```{r echo = FALSE}
+tibble::as.tibble(ggtextparallels::biblesearch_versions)
+```
+
 
 156 gospel parallels are available:
 
 ```{r echo=FALSE}
 library(ggtextparallels)
-tibble::as.tibble(gospel_parallels)
+t <- tibble::as.tibble(gospel_parallels)
+dplyr::select(t, Pericope, Matthew, Mark, Luke, John)
 ```
+
+Words common to each pericope are listed in the plot caption.
+
+## Examples
+
+### English (ESV)
 
 Here I request the English, ESV translation of 'The Healing of Peter's Mother-in-Law':
 
@@ -44,19 +65,24 @@ Here I request the English, ESV translation of 'The Healing of Peter's Mother-in
 ggtextparallel(parallel_no = 37, version = "eng-ESV", words_per_row = 6)
 ```
 
-Words common to each pericope are listed in the plot caption.
+### Koine Greek
 
-I can view the Greek by flipping the `version` argument:
+Flip the `version` argument to "grc":
 
 ```{r, fig.width=12}
 ggtextparallel(37, "grc", 5)
 ```
 
+### Spanish (Biblia Reina Valera 1960)
+
+```{r, fig.width=12}
+ggtextparallel(37, "spa-RVR1960", 6)
+```
 
 ## Future Work
 
-* Tests
+* Cleaner text returned
+* Common word highlighting
 * Vignette
-* Better organization of text
-* Highlighting similarities/differences
-* Document similarity scores in caption
+* shiny app
+
