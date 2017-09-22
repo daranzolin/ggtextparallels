@@ -15,6 +15,9 @@ ggtextparallel <- function(parallel_no, version = NULL, words_per_row = 7) {
   if(!parallel_no %in% internal_gospel_parallels$No.) {
     stop("Invalid parallel argument. Check gospel_parallels for valid numbers.")
   }
+  if (!version %in% internal_biblesearch_versions$id && !version == "grc") {
+    stop("Invalid version argument. Check biblesearch_versions for valid version ID")
+  }
 
   raw_parallel <- get_pericope(parallel_no, version)
 
@@ -57,7 +60,7 @@ ggtextparallel <- function(parallel_no, version = NULL, words_per_row = 7) {
          ) +
     ggplot2::xlim(1, 6) +
     ggplot2::ylim(-10, max_ylim) +
-    ggplot2::facet_wrap(~book) +
+    ggplot2::facet_wrap(~book, nrow = 1) +
     theme_ggtextparallels()
 
 }
@@ -87,7 +90,7 @@ get_pericope <- function(parallel_no, version) {
 
     #All other versions come from BIBLESEARCH API
 
-    x <- gospel_parallels %>%
+    x <- internal_gospel_parallels %>%
       dplyr::filter(No. == parallel_no) %>%
       tidyr::gather(book, verses, -Pericope) %>%
       dplyr::filter(verses != "",
@@ -117,7 +120,12 @@ get_pericope <- function(parallel_no, version) {
 get_plot_titles <- function(parallel_no, version) {
   texts <- gospel_parallels %>%
     dplyr::filter(No. == parallel_no)
-  title <- paste0(texts$Pericope, " (", version, ")")
+  if (version == "grc") {
+    version <- "(Koine Greek)"
+  } else {
+    version <- paste0("(", stringr::str_split(version, "-")[[1]][2], ")")
+  }
+  title <- paste(texts$Pericope, version)
   texts <- texts %>%
     dplyr::select(Matthew, Mark, Luke, John) %>%
     unlist()
