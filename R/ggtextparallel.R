@@ -109,10 +109,16 @@ get_pericope <- function(parallel_no, version) {
       dplyr::data_frame() %>%
       purrr::flatten_df() %>%
       tidyr::gather(book, text) %>%
-      dplyr::mutate(index = xl$verses)%>%
-      dplyr::mutate(first_verse_number = get_first_verse_number(index)) %>%
-      dplyr::rowwise() %>%
-      dplyr::mutate(text = new_text(first_verse_number, text))
+      dplyr::mutate(index = xl$verses)
+
+    if (version == "spa-RVR1960") {
+      return(xt)
+    } else {
+      xt <- xt %>%
+        dplyr::mutate(first_verse_number = get_first_verse_number(index)) %>%
+        dplyr::rowwise() %>%
+        dplyr::mutate(text = new_text(first_verse_number, text))
+    }
   }
   xt
 }
