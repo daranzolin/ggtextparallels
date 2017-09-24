@@ -97,19 +97,7 @@ get_pericope <- function(parallel_no, version) {
                     book != "No.") %>%
       dplyr::select(book, verses)
 
-    xl <- list(
-      version = version,
-      book = x$book,
-      verses = x$verses
-    )
-
-    xt <- purrr::pmap(xl, rbiblesearch::biblesearch_passage)
-    names(xt) <- xl$book
-    xt <- xt %>%
-      dplyr::data_frame() %>%
-      purrr::flatten_df() %>%
-      tidyr::gather(book, text) %>%
-      dplyr::mutate(index = xl$verses)
+    xt <- process_biblesearch_text(versions = version, books = x$book, verses = x$verses)
 
     if (version == "spa-RVR1960") {
       return(xt)

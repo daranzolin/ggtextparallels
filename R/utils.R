@@ -77,3 +77,18 @@ new_text <- function(first_verse_number, text) {
   t
 }
 
+process_biblesearch_text <- function(versions, books, verses) {
+
+  list(
+    version = versions,
+    book = books,
+    verses = verses
+  ) %>%
+    purrr::pmap(rbiblesearch::biblesearch_passage) %>%
+    purrr::map(setNames, "text") %>%
+    dplyr::data_frame(text = .) %>%
+    tidyr::unnest() %>%
+    dplyr::mutate(index = verses,
+                  book = books)
+}
+

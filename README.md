@@ -2,7 +2,7 @@
 ggtextparallels
 ===============
 
-The goal of ggtextparallels is to approximate fancy and expensive tools like the *Synopsis Quattuor Evangeliorum*, an essential tool for biblical scholars. Thanks to the people at [BibleSearch](http://bibles.org/eng-GNTD/Gen/1) `ggtextparallels` now supports over 300 versions across 277 languages.
+The goal of ggtextparallels is twofold: (1) to approximate fancy and expensive tools like the *Synopsis Quattuor Evangeliorum*, an essential tool for biblical scholars; and (2) to study biblical passages across multiple translations. Thanks to the people at [BibleSearch](http://bibles.org/eng-GNTD/Gen/1) `ggtextparallels` now supports over 300 versions across 277 languages.
 
 Installation
 ------------
@@ -24,10 +24,12 @@ devtools::install_github("daranzolin/rbiblesearch")
 rbiblesearch::set_biblesearch_key("your_key_here")
 ```
 
-Introduction
-------------
+ggtextparallel
+--------------
 
-The central function, `ggtextparallel`, takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, 304 of which can be obtained from `biblesearch_versions`, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
+`ggtextparallel` creates a grid of text for common stories across the four gospels. In the examples below, the story of the healing of Peter's Mother-in-law is displayed in its Matthean, Markan, and Lukan contexts.
+
+The function takes three arguments: a `parallel_no`, which can be gleaned from `gospel_parallels`, `version`, 304 of which can be obtained from `biblesearch_versions`, and `words_per_row`, which allows users to adjust the amount of words displayed on each row.
 
     #> # A tibble: 304 x 12
     #>            id                                                        name
@@ -97,16 +99,16 @@ ggtextparallel(37, "spa-RVR1960", 6)
 
 ![](README-unnamed-chunk-7-1.png)
 
-### Portuguese (Nova Tradução na Linguagem de Hoje)
+gglangparallel
+--------------
+
+`gglangparallel` has a similar output, but the facets are by *version* instead of book. In the example below, Romans 5:6 is displayed in English (ESV), Spanish, and French.
 
 ``` r
-ggtextparallel(37, "por-NTLH", 6)
+gglangparallel(versions = c("eng-ESV", "spa-RVR1960", "fra-LSG"), book = "romans", verses = "5:6", words_per_row = 7)
 ```
 
 ![](README-unnamed-chunk-8-1.png)
-
-Future Work
------------
 
 -   Common word highlighting
 -   Vignette
